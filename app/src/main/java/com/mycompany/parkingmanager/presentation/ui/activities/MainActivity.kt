@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()){ isGranted ->
         if (isGranted){
-            // NotificationManager().showNotification(this, "", "")
         }
     }
 

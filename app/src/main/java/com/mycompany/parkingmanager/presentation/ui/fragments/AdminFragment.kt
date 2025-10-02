@@ -47,10 +47,6 @@ class AdminFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentAdminBinding.inflate(inflater, container, false)
 
-        binding.addTariffButton.setOnClickListener {
-            addTariffDialog()
-        }
-
         binding.settingsButton.setOnClickListener {
             it.findNavController().navigate(R.id.settingsFragment)
         }
