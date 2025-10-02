@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "509698565200",
+    "project_id": "parkingmanager-9792c",
+    "storage_bucket": "parkingmanager-9792c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509698565200:android:0fdf7588cbc7781f2d9d55",
+        "android_client_info": {
+          "package_name": "com.mycompany.parkingmanager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkWSIeYqDo41N376I71YZQ1JOXWwOWh5M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

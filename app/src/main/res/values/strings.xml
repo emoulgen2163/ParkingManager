@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">ParkingManager</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="parking_manager">Parking Manager</string>
+    <string name="page_name">Page Name</string>
+    <string name="vehicle_entry">Vehicle Entry</string>
+    <string name="vehicle_list">Vehicle List</string>
+    <string name="reports">Reports</string>
+    <string name="settings">Settings</string>
+    <string name="enter_your_plate_number">Enter your plate number</string>
+    <string name="date">Date</string>
+    <string name="save">Save</string>
+    <string name="no_vehicles_added_yet">No vehicles added yet</string>
+
+    <string name="exit">Exit</string>
+    <string name="plate_number">Plate Number:</string>
+    <string name="vehicle_type">"Vehicle Type: "</string>
+    <string name="time_of_entry">Time of Entry:</string>
+    <string name="currency">Currency</string>
+    <string name="time_format">Time Format</string>
+    <string name="_12h">12h</string>
+    <string name="_24h">24h</string>
+    <string name="standard">Tariff Name: </string>
+    <string name="_100">100</string>
+    <string name="enter_the_brand">Enter the brand</string>
+    <string name="brand">Brand:</string>
+    <string name="tariff">Tariff:</string>
+    <string name="sort_by">Sort By</string>
+    <string name="price">Price ($)</string>
+    <string name="plate">Plate</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="user_exists_error">User already exists with this email</string>
+    <string name="no_user_exists_error">No such account exits with this email</string>
+    <string name="invalid">Invalid email or password</string>
+    <string name="descriptionText">Channel for app notification</string>
+    <string name="name">Parking Manager</string>
+
+</resources>

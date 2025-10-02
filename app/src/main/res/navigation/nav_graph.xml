@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.mycompany.parkingmanager.presentation.ui.fragments.DashboardFragment"
+        android:label="DashboardFragment" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_vehicleEntryFragment"
+            app:destination="@id/vehicleEntryFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_vehicleListFragment"
+            app:destination="@id/vehicleListFragment" />
+
+        <action
+            android:id="@+id/action_dashboardFragment_to_reportsFragment"
+            app:destination="@id/reportsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_adminFragment"
+            app:destination="@id/adminFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/vehicleEntryFragment"
+        android:name="com.mycompany.parkingmanager.presentation.ui.fragments.VehicleEntryFragment"
+        android:label="fragment_vehicle"
+        tools:layout="@layout/fragment_vehicle_entry" />
+    <fragment
+        android:id="@+id/vehicleListFragment"
+        android:name="com.mycompany.parkingmanager.presentation.ui.fragments.VehicleListFragment"
+        android:label="fragment_vehicle_list"
+        tools:layout="@layout/fragment_vehicle_list">
+    </fragment>
+    <fragment
+        android:id="@+id/reportsFragment"
+        android:name="com.mycompany.parkingmanager.presentation.ui.fragments.ReportsFragment"
+        android:label="fragment_reports"
+        tools:layout="@layout/fragment_reports" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.mycompany.parkingmanager.presentation.ui.fragments.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_adminFragment"
+            app:destination="@id/adminFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminFragment"
+        android:name="com.mycompany.parkingmanager.presentation.ui.fragments.AdminFragment"
+        android:label="AdminFragment" >
+        <action
+            android:id="@+id/action_adminFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+</navigation>
