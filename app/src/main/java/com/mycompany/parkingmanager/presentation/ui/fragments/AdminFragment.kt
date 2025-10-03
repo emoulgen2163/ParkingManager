@@ -150,68 +150,6 @@ class AdminFragment : Fragment() {
         return list
     }
 
-    private fun addTariffDialog(){
-        val layout = LinearLayout(requireContext()).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(10, 10, 10, 10)
-        }
-
-        val tariffEditText = EditText(requireContext()).apply{
-            hint = "Tariff Name: "
-            inputType = InputType.TYPE_CLASS_TEXT
-        }
-
-        val numberEditText = EditText(requireContext()).apply {
-            hint = "Price: "
-            inputType = InputType.TYPE_CLASS_TEXT
-        }
-
-        val dropdown = Spinner(requireContext())
-        val adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, SpinnerLists.CURRENCY_LIST)
-        adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item)
-        dropdown.adapter = adapter
-
-        when(currencySymbol){
-            "$" -> {
-                val index = SpinnerLists.CURRENCY_LIST.indexOf("USD")
-                dropdown.setSelection(index)
-            }
-            "€" -> {
-                val index = SpinnerLists.CURRENCY_LIST.indexOf("EUR")
-                dropdown.setSelection(index)
-            }
-            "£" -> {
-                val index = SpinnerLists.CURRENCY_LIST.indexOf("GBP")
-                dropdown.setSelection(index)
-            }
-        }
-
-        layout.addView(tariffEditText)
-        layout.addView(numberEditText)
-        layout.addView(dropdown)
-
-        AlertDialog.Builder(requireContext()).setTitle("Add Tariff").setView(layout).setPositiveButton("Add"){ dialog, _ ->
-            val price = numberEditText.text.toString().toDouble()
-            val tariffName = tariffEditText.text.toString()
-            var currentSelection = dropdown.selectedItem.toString()
-
-            when(currentSelection){
-                "USD" -> currentSelection = "$"
-                "EUR" -> currentSelection = "€"
-                "GBP" -> currentSelection = "£"
-            }
-
-            val tariff = Tariff(tariffName = tariffName, price = price, currencySymbol = currentSelection)
-            tariffViewModel.addTariff(tariff)
-
-            dialog.dismiss()
-        }.setNegativeButton("Cancel"){ dialog, _ ->
-            dialog.dismiss()
-        }.show()
-
-
-    }
-
     private fun showEditTaskDialog(tariff: Tariff) {
         val layout = LinearLayout(requireContext()).apply {
             orientation = LinearLayout.VERTICAL

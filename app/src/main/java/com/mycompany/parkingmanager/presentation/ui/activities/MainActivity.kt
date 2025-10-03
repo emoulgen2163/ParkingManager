@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun scheduleCurrencyWorker(context: Context) {
-        val workRequest = PeriodicWorkRequestBuilder<CurrencyUpdateWorker>(1, TimeUnit.DAYS)
+        val workRequest = PeriodicWorkRequestBuilder<CurrencyUpdateWorker>(12, TimeUnit.HOURS)
             .setConstraints(
                 Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED) // only run if online

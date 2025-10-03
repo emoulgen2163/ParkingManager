@@ -90,9 +90,11 @@ class VehicleEntryFragment : Fragment() {
             Snackbar.make(myView, "Saved Successfully", Snackbar.LENGTH_SHORT).show()
         } else{
             if(!requiredAreas){
+                if (tariffName.isEmpty()) Toast.makeText(myView.context, "Please enter the tariff name according to your car type.\nYou can see all the tariffs in Admin section", Toast.LENGTH_SHORT).show()
+
                 Toast.makeText(myView.context, "Please fill the required areas", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(myView.context, "The plate number must match with the standard rules", Toast.LENGTH_SHORT).show()
+                Toast.makeText(myView.context, "The plate number must match with the standard rules.\nFor example '34ABC123'", Toast.LENGTH_SHORT).show()
             }
         }
     }
