@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()){ isGranted ->
         if (isGranted){
+            // NotificationManager().showNotification(this, "", "")
         }
     }
 
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun scheduleCurrencyWorker(context: Context) {
-        val workRequest = PeriodicWorkRequestBuilder<CurrencyUpdateWorker>(12, TimeUnit.HOURS)
+        val workRequest = PeriodicWorkRequestBuilder<CurrencyUpdateWorker>(1, TimeUnit.DAYS)
             .setConstraints(
                 Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED) // only run if online
