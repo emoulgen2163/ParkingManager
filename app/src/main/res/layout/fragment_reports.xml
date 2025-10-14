@@ -13,18 +13,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="How would you like to have the report?"
+            android:text="@string/how_would_you_like_to_have_the_report"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
-            android:id="@+id/dropdown"
+            android:id="@+id/dropdownCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView" />
+
+        <Spinner
+            android:id="@+id/dropdownDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView" />
 
         <ImageView
@@ -32,9 +40,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:layout_marginEnd="8dp"
             android:src="@drawable/baseline_share_24"
             app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dropdownDate" />
 
         <ImageView
             android:id="@+id/download"
@@ -42,6 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:src="@drawable/baseline_download_24"
+            app:layout_constraintTop_toBottomOf="@+id/dropdownDate"
             app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
             app:layout_constraintEnd_toStartOf="@id/share" />
 
@@ -49,10 +60,10 @@
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dropdown" />
+            app:layout_constraintTop_toBottomOf="@id/dropdownCategory" />
 
         <RelativeLayout
             android:id="@+id/relativeLayout"

@@ -1,6 +1,7 @@
 package com.mycompany.parkingmanager.presentation.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +12,11 @@ import androidx.fragment.app.activityViewModels
 import com.google.android.material.R
 import com.google.android.material.snackbar.Snackbar
 import com.mycompany.parkingmanager.databinding.FragmentVehicleEntryBinding
+import com.mycompany.parkingmanager.domain.Tariff
 import com.mycompany.parkingmanager.domain.Vehicle
 import com.mycompany.parkingmanager.domain.VehicleType
 import com.mycompany.parkingmanager.domain.utils.PreferenceKeys.timeFormatFlow
+import com.mycompany.parkingmanager.domain.viewModel.TariffViewModel
 import com.mycompany.parkingmanager.domain.viewModel.VehicleViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -31,6 +34,9 @@ class VehicleEntryFragment : Fragment() {
     private val binding get() = _binding!!
 
     val vehicleViewModel: VehicleViewModel by activityViewModels()
+    val tariffViewModel: TariffViewModel by activityViewModels()
+
+
     private lateinit var myView: View
 
     override fun onCreateView(
@@ -59,10 +65,18 @@ class VehicleEntryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, VehicleType.entries)
+        val vehicleTypeAdapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, VehicleType.entries)
 
+        binding.vehicleTypeSpinner.adapter = vehicleTypeAdapter
 
-        binding.vehicleTypeSpinner.adapter = arrayAdapter
+        tariffViewModel.getTariffs().observe(viewLifecycleOwner) { list ->
+            val tariffList = list.map {
+                it.tariffName
+            }
+            val tariffNameAdapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, tariffList)
+            binding.tariffSpinner.adapter = tariffNameAdapter
+        }
+
         myView = view
 
 
@@ -70,17 +84,18 @@ class VehicleEntryFragment : Fragment() {
         binding.button.setOnClickListener {
             saveVehicle(myView)
 
-            binding.textInputEditText.setText("")
+            binding.textInputEditTextPlate.setText("")
+            binding.textInputEditTextBrand.setText("")
         }
     }
 
     private fun saveVehicle(view: View){
-        val plateNo = binding.textInputEditText.text.toString().uppercase(Locale.ROOT)
+        val plateNo = binding.textInputEditTextPlate.text.toString().uppercase(Locale.ROOT)
         val brand = binding.textInputEditTextBrand.text.toString()
         val vehicleType = binding.vehicleTypeSpinner.selectedItem as VehicleType
-        val tariffName = binding.textInputEditTextTariffName.text.toString()
+        val tariffName = binding.tariffSpinner.selectedItem as String
 
-        val requiredAreas = plateNo.isNotEmpty() && brand.isNotEmpty() && tariffName.isNotEmpty()
+        val requiredAreas = plateNo.isNotEmpty() && brand.isNotEmpty()
         val pattern = Regex("^\\d{2}[A-Za-z]+\\d{3}$")
         val plateCondition = plateNo.length == 8 && pattern.matches(plateNo)
 
@@ -89,13 +104,7 @@ class VehicleEntryFragment : Fragment() {
             vehicleViewModel.addVehicle(vehicle)
             Snackbar.make(myView, "Saved Successfully", Snackbar.LENGTH_SHORT).show()
         } else{
-            if(!requiredAreas){
-                if (tariffName.isEmpty()) Toast.makeText(myView.context, "Please enter the tariff name according to your car type.\nYou can see all the tariffs in Admin section", Toast.LENGTH_SHORT).show()
-
-                Toast.makeText(myView.context, "Please fill the required areas", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(myView.context, "The plate number must match with the standard rules.\nFor example '34ABC123'", Toast.LENGTH_SHORT).show()
-            }
+            Toast.makeText(myView.context, "The plate number must match with the standard rules.\nFor example '34ABC123'", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -32,7 +32,7 @@
             app:startIconDrawable="@drawable/license_plate">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEditText"
+                android:id="@+id/textInputEditTextPlate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -84,29 +84,14 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutTariffName"
-            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-            android:layout_width="0dp"
+        <Spinner
+            android:id="@+id/tariffSpinner"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:hint="Enter the tariff name"
-            app:endIconMode="clear_text"
-            app:errorEnabled="true"
-            app:errorIconDrawable="@drawable/baseline_error_24"
-            app:helperText="Required*"
-            app:helperTextTextColor="@color/design_default_color_error"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDate"
-            app:startIconDrawable="@drawable/tariff">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditTextTariffName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDate" />
 
         <Spinner
             android:id="@+id/vehicleTypeSpinner"
@@ -115,7 +100,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutTariffName" />
+            app:layout_constraintTop_toBottomOf="@+id/tariffSpinner" />
 
         <Button
             android:id="@+id/button"

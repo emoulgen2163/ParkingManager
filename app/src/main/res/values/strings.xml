@@ -42,5 +42,6 @@
     <string name="invalid">Invalid email or password</string>
     <string name="descriptionText">Channel for app notification</string>
     <string name="name">Parking Manager</string>
+    <string name="how_would_you_like_to_have_the_report">How would you like to have the report?</string>
 
 </resources>

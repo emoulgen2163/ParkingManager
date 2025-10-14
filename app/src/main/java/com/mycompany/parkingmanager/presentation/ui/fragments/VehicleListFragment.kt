@@ -132,12 +132,14 @@ class VehicleListFragment : Fragment(), SearchView.OnQueryTextListener {
             binding.chipGroup.addView(chip)
         }
 
-        binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
-            val chip: Chip? = group.findViewById(checkedId)
-            val selected: VehicleType? = VehicleType.entries.find {
-                it.name == chip?.text
+        binding.chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+            for (id in checkedIds){
+                val chip: Chip? = group.findViewById(id)
+                val selected: VehicleType? = VehicleType.entries.find {
+                    it.name == chip?.text
+                }
+                vehicleViewModel.setFilter(selected)
             }
-            vehicleViewModel.setFilter(selected)
         }
 
         binding.exportButton.setOnClickListener {
@@ -150,14 +152,6 @@ class VehicleListFragment : Fragment(), SearchView.OnQueryTextListener {
         }
 
 
-    }
-
-    private fun observeVehicles(start: Long, end: Long) {
-        lifecycleScope.launch {
-            vehicleViewModel.searchByEntryTime(start, end).collectLatest { vehicles ->
-                vehicleAdapter.submitData(vehicles)
-            }
-        }
     }
 
     @SuppressLint("CheckResult")
@@ -194,7 +188,6 @@ class VehicleListFragment : Fragment(), SearchView.OnQueryTextListener {
                     historyViewModel.insert(history)
                     vehicleViewModel.deleteVehicle(vehicle)
                 }?: run {
-                    Log.e("VehicleListFragment", "Tariff not found for: ${vehicle.tariffName}")
                     Toast.makeText(requireContext(), "Tariff not found!", Toast.LENGTH_SHORT).show()
                 }
             }

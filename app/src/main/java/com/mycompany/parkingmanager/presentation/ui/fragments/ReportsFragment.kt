@@ -3,6 +3,7 @@ package com.mycompany.parkingmanager.presentation.ui.fragments
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -67,42 +68,41 @@ class ReportsFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding =  FragmentReportsBinding.inflate(inflater, container, false)
 
-        binding.dropdown.adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, SpinnerLists.DATE_LIST)
+        binding.dropdownDate.adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, SpinnerLists.DATE_LIST)
+        binding.dropdownCategory.adapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, SpinnerLists.CATEGORY)
 
-        binding.dropdown.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.dropdownDate.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 selectedView: View?,
                 position: Int,
                 id: Long
             ) {
+                val selectedDate = binding.dropdownDate.selectedItem as? String ?: return
+                val selectedCategory = binding.dropdownCategory.selectedItem as? String ?: return
 
-                when(position){
-                    0 -> observeVehiclesByTariff(
-                        DateUtils.startOfToday(),
-                        DateUtils.endOfToday(),
-                        SpinnerLists.DATE_LIST[0]) {} // Today by Tariff Name
-                    1 -> observeVehiclesByPlate(
-                        DateUtils.startOfToday(),
-                        DateUtils.endOfToday(),
-                        SpinnerLists.DATE_LIST[1]){} // Today by Plate Number
-                    2 -> observeVehiclesByTariff(DateUtils.startOfThisWeek(), DateUtils.endOfThisWeek(), SpinnerLists.DATE_LIST[2]){} // This Week by Tariff Name
-                    3 -> observeVehiclesByPlate(DateUtils.startOfThisWeek(), DateUtils.endOfThisWeek(), SpinnerLists.DATE_LIST[3]){} // This Week by Plate Number
-                    4 -> observeVehiclesByTariff(DateUtils.startOfLastWeek(), DateUtils.endOfLastWeek(), SpinnerLists.DATE_LIST[4]){} // Last Week by Tariff Name
-                    5 -> observeVehiclesByPlate(DateUtils.startOfLastWeek(), DateUtils.endOfLastWeek(), SpinnerLists.DATE_LIST[5]){} // Last Week by Plate Number
-                    6 -> observeVehiclesByTariff(DateUtils.startOfThisMonth(), DateUtils.endOfThisMonth(), SpinnerLists.DATE_LIST[6]){} // This Month by Tariff Name
-                    7 -> observeVehiclesByPlate(DateUtils.startOfThisMonth(), DateUtils.endOfThisMonth(), SpinnerLists.DATE_LIST[7]){} // This Month by Plate Number
-                    8 -> observeVehiclesByTariff(DateUtils.startOfThisYear(), DateUtils.endOfThisYear(), SpinnerLists.DATE_LIST[8]){} // This Year by Tariff Name
-                    9 -> observeVehiclesByPlate(DateUtils.startOfThisYear(), DateUtils.endOfThisYear(), SpinnerLists.DATE_LIST[9]){} // This Year by Plate Number
-
-                }
+                updateCharts(selectedCategory, selectedDate)
             }
 
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
+        }
 
+        binding.dropdownCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                selectedView: View?,
+                position: Int,
+                id: Long
+            ) {
+                val selectedCategory = binding.dropdownCategory.selectedItem as? String ?: return
+                val selectedDate = binding.dropdownDate.selectedItem as? String ?: return
+
+                updateCharts(selectedCategory, selectedDate)
+            }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
-
         }
+
 
         binding.share.setOnClickListener {
             // val pieChartBitmap = BitmapHelper.getChartBitmap(binding.relativeLayout)
@@ -122,90 +122,151 @@ class ReportsFragment : Fragment() {
         return binding.root
     }
 
+    private fun updateCharts(category: String, date: String) {
+        when (category) {
+            "Tariff Name" -> when (date) {
+                "Today" -> observeVehiclesByTariff(DateUtils.startOfToday(), DateUtils.endOfToday(), "Today") {}
+                "This Week" -> observeVehiclesByTariff(DateUtils.startOfThisWeek(), DateUtils.endOfThisWeek(), "This Week") {}
+                "Last Week" -> observeVehiclesByTariff(DateUtils.startOfLastWeek(), DateUtils.endOfLastWeek(), "Last Week") {}
+                "This Month" -> observeVehiclesByTariff(DateUtils.startOfThisMonth(), DateUtils.endOfThisMonth(), "This Month") {}
+                "This Year" -> observeVehiclesByTariff(DateUtils.startOfThisYear(), DateUtils.endOfThisYear(), "This Year") {}
+            }
+
+            "Plate Number" -> when (date) {
+                "Today" -> observeVehiclesByPlate(DateUtils.startOfToday(), DateUtils.endOfToday(), "Today") {}
+                "This Week" -> observeVehiclesByPlate(DateUtils.startOfThisWeek(), DateUtils.endOfThisWeek(), "This Week") {}
+                "Last Week" -> observeVehiclesByPlate(DateUtils.startOfLastWeek(), DateUtils.endOfLastWeek(), "Last Week") {}
+                "This Month" -> observeVehiclesByPlate(DateUtils.startOfThisMonth(), DateUtils.endOfThisMonth(), "This Month") {}
+                "This Year" -> observeVehiclesByPlate(DateUtils.startOfThisYear(), DateUtils.endOfThisYear(), "This Year") {}
+            }
+        }
+    }
+
+
     private fun setUpChartData() {
         isPdfGenerateOn = true
 
-        when (index) {
-            0 -> observeVehiclesByTariff(DateUtils.startOfToday(),
-                DateUtils.endOfToday(),
-                SpinnerLists.DATE_LIST[0]){
-                index++
-                setUpChartData()
-            } // Today by Tariff Name
-            1 -> observeVehiclesByPlate(
-                DateUtils.startOfToday(),
-                DateUtils.endOfToday(),
-                SpinnerLists.DATE_LIST[1]
-            ){
-                index++
-                setUpChartData()
-            } // Today by Plate Number
-            2 -> observeVehiclesByTariff(
-                DateUtils.startOfThisWeek(),
-                DateUtils.endOfThisWeek(),
-                SpinnerLists.DATE_LIST[2]
-            ){
-                index++
-                setUpChartData()
-            } // This Week by Tariff Name
-            3 -> observeVehiclesByPlate(
-                DateUtils.startOfThisWeek(),
-                DateUtils.endOfThisWeek(),
-                SpinnerLists.DATE_LIST[3]
-            ){
-                index++
-                setUpChartData()
-            } // This Week by Plate Number
-            4 -> observeVehiclesByTariff(
-                DateUtils.startOfLastWeek(),
-                DateUtils.endOfLastWeek(),
-                SpinnerLists.DATE_LIST[4]
-            ){
-                index++
-                setUpChartData()
-            } // Last Week by Tariff Name
-            5 -> observeVehiclesByPlate(
-                DateUtils.startOfLastWeek(),
-                DateUtils.endOfLastWeek(),
-                SpinnerLists.DATE_LIST[5]
-            ){
-                index++
-                setUpChartData()
-            } // Last Week by Plate Number
-            6 -> observeVehiclesByTariff(
-                DateUtils.startOfThisMonth(),
-                DateUtils.endOfThisMonth(),
-                SpinnerLists.DATE_LIST[6]
-            ){
-                index++
-                setUpChartData()
-            } // This Month by Tariff Name
-            7 -> observeVehiclesByPlate(
-                DateUtils.startOfThisMonth(),
-                DateUtils.endOfThisMonth(),
-                SpinnerLists.DATE_LIST[7]
-            ){
-                index++
-                setUpChartData()
-            } // This Month by Plate Number
-            8 -> observeVehiclesByTariff(
-                DateUtils.startOfThisYear(),
-                DateUtils.endOfThisYear(),
-                SpinnerLists.DATE_LIST[8]
-            ){
-                index++
-                setUpChartData()
-            } // This Year by Tariff Name
-            9 -> observeVehiclesByPlate(
-                DateUtils.startOfThisYear(),
-                DateUtils.endOfThisYear(),
-                SpinnerLists.DATE_LIST[9]
-            ){
-                index = 0
-                isPdfGenerateOn = false
-                openAlertDialog()
-            } // This Year by Plate Number
+        // List of time ranges and their corresponding date pairs
+        val timeRanges = listOf(
+            SpinnerLists.DATE_LIST[0] to (DateUtils.startOfToday() to DateUtils.endOfToday()),
+            SpinnerLists.DATE_LIST[1] to (DateUtils.startOfThisWeek() to DateUtils.endOfThisWeek()),
+            SpinnerLists.DATE_LIST[2] to (DateUtils.startOfLastWeek() to DateUtils.endOfLastWeek()),
+            SpinnerLists.DATE_LIST[3] to (DateUtils.startOfThisMonth() to DateUtils.endOfThisMonth()),
+            SpinnerLists.DATE_LIST[4] to (DateUtils.startOfThisYear() to DateUtils.endOfThisYear())
+        )
+
+        // total number of steps = (number of time ranges * 2)
+        val totalSteps = timeRanges.size * 2
+
+        // Safety guard — reset index if it somehow goes out of range
+        if (index >= totalSteps) {
+            index = 0
+            isPdfGenerateOn = false
+            openAlertDialog()
+            return
         }
+
+        // Determine which time range and chart type to use
+        val (label, range) = timeRanges[index / 2]
+        val (start, end) = range
+
+        val isTariff = index % 2 == 0
+
+        Log.d("index", "index: $index")
+
+        if (isTariff) {
+            observeVehiclesByTariff(start, end, label) {
+                index++
+                setUpChartData()
+            }
+        } else {
+            observeVehiclesByPlate(start, end, label) {
+                index++
+                setUpChartData()
+            }
+        }
+
+//        when (index) {
+//            0 -> observeVehiclesByTariff(DateUtils.startOfToday(),
+//                DateUtils.endOfToday(),
+//                SpinnerLists.DATE_LIST[0]){
+//                index++
+//                setUpChartData()
+//            } // Today by Tariff Name
+//            1 -> observeVehiclesByPlate(
+//                DateUtils.startOfToday(),
+//                DateUtils.endOfToday(),
+//                SpinnerLists.DATE_LIST[1]
+//            ){
+//                index++
+//                setUpChartData()
+//            } // Today by Plate Number
+//            2 -> observeVehiclesByTariff(
+//                DateUtils.startOfThisWeek(),
+//                DateUtils.endOfThisWeek(),
+//                SpinnerLists.DATE_LIST[2]
+//            ){
+//                index++
+//                setUpChartData()
+//            } // This Week by Tariff Name
+//            3 -> observeVehiclesByPlate(
+//                DateUtils.startOfThisWeek(),
+//                DateUtils.endOfThisWeek(),
+//                SpinnerLists.DATE_LIST[3]
+//            ){
+//                index++
+//                setUpChartData()
+//            } // This Week by Plate Number
+//            4 -> observeVehiclesByTariff(
+//                DateUtils.startOfLastWeek(),
+//                DateUtils.endOfLastWeek(),
+//                SpinnerLists.DATE_LIST[4]
+//            ){
+//                index++
+//                setUpChartData()
+//            } // Last Week by Tariff Name
+//            5 -> observeVehiclesByPlate(
+//                DateUtils.startOfLastWeek(),
+//                DateUtils.endOfLastWeek(),
+//                SpinnerLists.DATE_LIST[5]
+//            ){
+//                index++
+//                setUpChartData()
+//            } // Last Week by Plate Number
+//            6 -> observeVehiclesByTariff(
+//                DateUtils.startOfThisMonth(),
+//                DateUtils.endOfThisMonth(),
+//                SpinnerLists.DATE_LIST[6]
+//            ){
+//                index++
+//                setUpChartData()
+//            } // This Month by Tariff Name
+//            7 -> observeVehiclesByPlate(
+//                DateUtils.startOfThisMonth(),
+//                DateUtils.endOfThisMonth(),
+//                SpinnerLists.DATE_LIST[7]
+//            ){
+//                index++
+//                setUpChartData()
+//            } // This Month by Plate Number
+//            8 -> observeVehiclesByTariff(
+//                DateUtils.startOfThisYear(),
+//                DateUtils.endOfThisYear(),
+//                SpinnerLists.DATE_LIST[8]
+//            ){
+//                index++
+//                setUpChartData()
+//            } // This Year by Tariff Name
+//            9 -> observeVehiclesByPlate(
+//                DateUtils.startOfThisYear(),
+//                DateUtils.endOfThisYear(),
+//                SpinnerLists.DATE_LIST[9]
+//            ){
+//                index = 0
+//                isPdfGenerateOn = false
+//                openAlertDialog()
+//            } // This Year by Plate Number
+//        }
     }
 
     private fun openAlertDialog() {
